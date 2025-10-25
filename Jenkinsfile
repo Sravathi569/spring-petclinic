@@ -53,7 +53,7 @@ pipeline {
                         spec: """{
                             "files": [{
                                 "pattern": "target/*.jar",
-                                "target": "java_spc-libs-release/gandru/spring-petclinic/"
+                                "target": ""target": "libs-release-local/"
                             }]
                         }""",
                         buildInfo: buildInfo
