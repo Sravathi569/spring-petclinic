@@ -1,0 +1,15 @@
+trigger:
+  - main
+pool: 'selfvm'
+
+stages:
+ - stage:
+   jobs:
+    - job:
+      steps:
+        - task: Maven@4
+          inputs:
+            mavenPOMFile: 'pom.xml'
+            goals: 'package'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
