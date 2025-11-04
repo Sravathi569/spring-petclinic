@@ -1,0 +1,44 @@
+trigger:
+ - main
+pool: Default 
+   
+stages:
+  - stage: build
+    jobs:
+    - job: buildjob
+      steps:
+        - task: SonarCloudPrepare@2
+          inputs:
+            sonar.host.url: 'https://sonarcloud.io'
+            SonarCloud: 'sonarazure'
+            organization: 'sravanthi569'
+            scannerMode: 'Other'
+            configMode: 'manual'
+
+            extraProperties: |
+              sonar.projectKey=Sravathi569_spring-petclinic
+              sonar.projectName=petclinic
+            
+
+        - task: Maven@4
+          inputs:
+            mavenPomFile: 'pom.xml'
+            goals: 'clean verify sonar:sonar'
+            publishJUnitResults: true
+
+            
+        - task: SonarCloudPublish@2
+          inputs:
+            pollingTimeoutSec: '300'
+
+        
+        - task: CopyFiles@2 
+          inputs: 
+            Contents: ''
+            TargetFolder: '$(build.artifactstagingdirectory)'
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
